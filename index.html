@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚌 빵빵! 귀여운 실시간 버스 알리미</title>
-    
-    <!-- 팝콘체 & Pretendard 폰트 -->
+    <title>🚌 강남 · 언주중 · 대치동 · 삼성동 디테일 라이브 지도 & 교통 계산기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @font-face {
             font-family: 'ONE-Mobile-POP';
@@ -22,145 +21,43 @@
             --primary-dark: #E6A100;
             --accent-blue: #3B82F6;
             --accent-green: #10B981;
-            --accent-pink: #FF6B81;
             --bg-color: #FFFDF0;
             --card-bg: #FFFFFF;
             --border-radius: 22px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
             background-color: var(--bg-color);
             font-family: var(--main-font);
             color: #2D3748;
-            padding: 18px;
+            padding: 16px;
         }
 
-        /* App Header */
+        .font-pop {
+            font-family: var(--pop-font);
+        }
+
         .app-header {
             background: linear-gradient(135deg, #FFD54F, #FFB300);
             border-radius: var(--border-radius);
-            padding: 20px 28px;
+            padding: 20px 24px;
             box-shadow: 0 10px 25px rgba(255, 179, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
             border: 4px solid #FFF;
         }
 
-        .header-title {
-            font-family: var(--pop-font);
-            font-size: 2.3rem;
-            color: #4A2800;
-            text-shadow: 2px 2px 0px #FFF;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-subtitle {
-            font-size: 1rem;
-            color: #5D4037;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-
-        /* 2-Column Split Dashboard */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 410px 1fr;
-            gap: 20px;
-            align-items: start;
-        }
-
-        @media (max-width: 1024px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Card Panels */
         .card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 22px;
+            padding: 20px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.04);
             border: 3px solid #FFE082;
-            margin-bottom: 18px;
-        }
-
-        .card-title {
-            font-family: var(--pop-font);
-            font-size: 1.35rem;
-            color: #3E2723;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Input Controls */
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: #4A5568;
-            margin-bottom: 6px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid #FFE082;
-            border-radius: 14px;
-            font-size: 0.98rem;
-            outline: none;
-            background-color: #FFFDF7;
-            font-family: var(--main-font);
-            font-weight: 700;
-            transition: all 0.2s;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-dark);
-            background-color: #FFF;
-            box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.25);
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        /* Pin Selection Mode Buttons */
-        .map-pin-selector {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 14px;
-            background: #FFF8E1;
-            padding: 8px;
-            border-radius: 16px;
-            border: 2px dashed #FFE082;
         }
 
         .pin-btn {
-            flex: 1;
-            padding: 10px 6px;
-            border: none;
-            border-radius: 12px;
+            padding: 10px 8px;
+            border-radius: 14px;
             font-family: var(--pop-font);
-            font-size: 0.92rem;
+            font-size: 0.88rem;
             cursor: pointer;
             background: transparent;
             color: #5D4037;
@@ -168,68 +65,48 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
+            border: 2px solid transparent;
         }
 
         .pin-btn.active {
             background: var(--primary);
             color: #3E2723;
+            border-color: #F59E0B;
             box-shadow: 0 4px 12px rgba(255, 184, 0, 0.4);
         }
 
-        .btn-main {
+        .btn-calc {
             width: 100%;
-            background: linear-gradient(135deg, #FFB800, #FF9800);
-            color: #3E2723;
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+            color: #FFF;
             font-family: var(--pop-font);
             font-size: 1.3rem;
             padding: 16px;
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-            box-shadow: 0 6px 18px rgba(255, 152, 0, 0.35);
-            margin-top: 10px;
-            transition: transform 0.15s, box-shadow 0.15s;
-        }
-
-        .btn-main:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(255, 152, 0, 0.45);
-        }
-
-        /* MAP CONTAINER & OVERLAYS */
-        .map-container {
-            background: #FFF;
-            border-radius: var(--border-radius);
-            padding: 20px;
             border: 3px solid #FFE082;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-            position: sticky;
-            top: 18px;
+            border-radius: 18px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(245, 124, 0, 0.4);
+            transition: transform 0.15s, box-shadow 0.15s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
-        .map-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
+        .btn-calc:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(245, 124, 0, 0.5);
+            background: linear-gradient(135deg, #FFA726, #FB8C00);
         }
 
-        .map-title {
-            font-family: var(--pop-font);
-            font-size: 1.45rem;
-            color: #3E2723;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .btn-calc:active {
+            transform: translateY(1px);
         }
 
         .map-window {
             position: relative;
             width: 100%;
-            height: 540px;
+            height: 600px;
             background: #EBF8FF;
-            border-radius: 18px;
+            border-radius: 20px;
             border: 3px solid #CBD5E0;
             overflow: hidden;
             cursor: crosshair;
@@ -242,15 +119,14 @@
             display: block;
         }
 
-        /* Live Floating Badge on Map Header */
         .map-status-overlay {
             position: absolute;
             top: 14px;
             left: 14px;
             right: 14px;
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(6px);
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-radius: 18px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.08);
             display: flex;
@@ -258,24 +134,6 @@
             justify-content: space-between;
             z-index: 10;
             border: 2px solid #FFF8E1;
-        }
-
-        .status-badge {
-            font-family: var(--pop-font);
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .status-badge.safe { color: #059669; }
-        .status-badge.warning { color: #D97706; }
-        .status-badge.danger { color: #DC2626; }
-
-        .route-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-            margin-top: 12px;
         }
 
         .route-card {
@@ -291,72 +149,93 @@
         .route-card.top {
             border-color: #FFB800;
             background: #FFF8E1;
+            box-shadow: 0 4px 10px rgba(255, 184, 0, 0.2);
         }
     </style>
 </head>
 <body>
 
-<!-- APP HEADER -->
-<div class="app-header">
+<div class="app-header mb-5 flex items-center justify-between">
     <div>
-        <div class="header-title">🚌 빵빵! 실시간 버스 지도 알리미</div>
-        <div class="header-subtitle">지도를 자유롭게 클릭하고, 귀엽게 덜컹이며 달리는 실시간 버스를 확인하세요!</div>
+        <h1 class="font-pop text-2xl md:text-3xl text-[#4A2800] flex items-center gap-2 drop-shadow">
+            🚌 강남 · 언주중 · 대치동 · 삼성동 라이브 정밀 지도
+        </h1>
+        <p class="text-sm font-bold text-[#5D4037] mt-1">
+            🏫 언주중학교는 북서쪽에 고정된 건물입니다! 지도의 원하는 위치를 클릭해 출발지(📍)를 독립적으로 설정하세요.
+        </p>
     </div>
-    <div style="font-size:3rem; filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.1));">🗺️</div>
+    <div class="text-4xl hidden sm:block">🗺️</div>
 </div>
 
-<div class="dashboard">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
-    <!-- LEFT CONTROLS -->
-    <div class="left-panel">
+    <div class="lg:col-span-5 flex flex-col gap-4">
+
+        <!-- PIN SELECTION MODE BAR -->
+        <div class="card bg-[#FFF8E1] border-2 border-dashed border-[#FFE082]">
+            <div class="font-pop text-sm text-[#5D4037] mb-2 flex items-center gap-1">
+                👉 지도를 클릭할 때 설정할 항목을 선택하세요:
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+                <button class="pin-btn active" id="btnPinStart" onclick="setSelectMode('start')">📍 출발지 선택</button>
+                <button class="pin-btn" id="btnPinStop" onclick="setSelectMode('stop')">🚏 정류장 선택</button>
+                <button class="pin-btn" id="btnPinAcademy" onclick="setSelectMode('academy')">🏫 목적지 선택</button>
+            </div>
+        </div>
         
-        <!-- STEP 1: 위치 설정 -->
+        <!-- STEP 1: 위치 정보 확인 -->
         <div class="card">
-            <div class="card-title">📍 출발지 / 정류장 / 학원 설정</div>
+            <h2 class="font-pop text-lg text-[#3E2723] mb-3 flex items-center gap-2">
+                📍 선택된 경로 위치
+            </h2>
             
-            <div class="form-group">
-                <label>📍 출발 위치 (내 위치)</label>
-                <input type="text" id="startLocName" class="form-control" value="역삼동 (지도에서 선택 가능)">
-            </div>
-
-            <div class="form-group">
-                <label>🚏 버스 탑승 정류장</label>
-                <input type="text" id="stopLocName" class="form-control" value="한티역 2번 출구 정류장">
-            </div>
-
-            <div class="form-group">
-                <label>🏫 목적지 (학원)</label>
-                <input type="text" id="academyName" class="form-control" value="대치 명문 수학학원">
-            </div>
-
-            <div class="input-row">
-                <div class="form-group">
-                    <label>🚌 버스 번호</label>
-                    <input type="text" id="busNum" class="form-control" value="340번">
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-extrabold text-gray-600 mb-1">📍 출발지 위치 (클릭하여 자유 변경 가능)</label>
+                    <input type="text" id="startLocName" class="w-full p-2.5 bg-[#FFFDF7] border-2 border-[#FFE082] rounded-xl text-sm font-bold text-gray-800 outline-none focus:border-amber-500" value="📍 언주중학교 근처 도로 (클릭 지정)">
                 </div>
-                <div class="form-group">
-                    <label>⏰ 도착 목표 시간</label>
-                    <input type="time" id="classTime" class="form-control" value="18:00">
+
+                <div>
+                    <label class="block text-xs font-extrabold text-gray-600 mb-1">🚏 버스 탑승 정류장 (도곡로 / 한티역)</label>
+                    <input type="text" id="stopLocName" class="w-full p-2.5 bg-[#FFFDF7] border-2 border-[#FFE082] rounded-xl text-sm font-bold text-gray-800 outline-none focus:border-amber-500" value="🚏 한티역 2번 출구 버스 정류장">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-extrabold text-gray-600 mb-1">🏫 목적지 (대치동 학원가)</label>
+                    <input type="text" id="academyName" class="w-full p-2.5 bg-[#FFFDF7] border-2 border-[#FFE082] rounded-xl text-sm font-bold text-gray-800 outline-none focus:border-amber-500" value="📚 대치동 학원가">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-extrabold text-gray-600 mb-1">🚌 버스 번호</label>
+                        <input type="text" id="busNum" class="w-full p-2.5 bg-[#FFFDF7] border-2 border-[#FFE082] rounded-xl text-sm font-bold text-gray-800 outline-none focus:border-amber-500" value="340번">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-extrabold text-gray-600 mb-1">⏰ 목표 도착 시간</label>
+                        <input type="time" id="classTime" class="w-full p-2.5 bg-[#FFFDF7] border-2 border-[#FFE082] rounded-xl text-sm font-bold text-gray-800 outline-none focus:border-amber-500" value="18:00">
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- STEP 2: 환경 설정 및 AI 분석 -->
+        <!-- STEP 2: 조건 및 연산 -->
         <div class="card">
-            <div class="card-title">🌤️ 날씨 & 걸음 속도 설정</div>
+            <h2 class="font-pop text-lg text-[#3E2723] mb-3 flex items-center gap-2">
+                🌤️ 조건 설정 및 이동 시간 연산
+            </h2>
 
-            <div class="input-row">
-                <div class="form-group">
-                    <label>🌦️ 날씨 상태</label>
-                    <select id="weatherSelect" class="form-control" onchange="recalculate()">
-                        <option value="clear">☀️ 맑음 (정체 없음)</option>
+            <div class="grid grid-cols-2 gap-2 mb-3">
+                <div>
+                    <label class="block text-xs font-extrabold text-gray-600 mb-1">🌦️ 날씨 상태</label>
+                    <select id="weatherSelect" class="w-full p-2.5 bg-[#FFFDF7] border-2 border-[#FFE082] rounded-xl text-xs font-bold text-gray-800 outline-none">
+                        <option value="clear">☀️ 맑음 (원활)</option>
                         <option value="rain">🌧️ 비 옴 (+3분 정체)</option>
                         <option value="snow">❄️ 눈 옴 (+6분 정체)</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>🏃 내 걸음 속도</label>
-                    <select id="speedSelect" class="form-control" onchange="recalculate()">
+                <div>
+                    <label class="block text-xs font-extrabold text-gray-600 mb-1">🏃 걸음 속도</label>
+                    <select id="speedSelect" class="w-full p-2.5 bg-[#FFFDF7] border-2 border-[#FFE082] rounded-xl text-xs font-bold text-gray-800 outline-none">
                         <option value="normal">🏃 보통 걸음</option>
                         <option value="fast">⚡ 파워 워킹</option>
                         <option value="slow">🚶 느긋한 걸음</option>
@@ -364,50 +243,72 @@
                 </div>
             </div>
 
-            <button class="btn-main" onclick="recalculate()">🔄 실시간 위치 & 분석 업데이트</button>
+            <!-- CALCULATE BUTTON -->
+            <button class="btn-calc mt-1" id="btnCalculate" onclick="calculateTransit()">
+                🧮 이동 시간 & 교통수단 계산하기
+            </button>
+
+            <!-- RESULT DISPLAY PANEL -->
+            <div id="calcResultBox" class="hidden mt-4 p-4 bg-[#FFFDE7] border-2 border-dashed border-[#FFD54F] rounded-2xl text-center">
+                <div id="resultTimeText" class="font-pop text-2xl text-[#E65100] mb-2">
+                    ⏱️ 총 소요 시간: --분
+                </div>
+                <div id="resultDetailText" class="text-xs font-semibold text-[#4E342E] leading-relaxed">
+                    [계산하기] 버튼을 누르면 정밀 경로 연산 결과가 출력됩니다.
+                </div>
+            </div>
         </div>
 
-        <!-- STEP 3: 놓쳤을 때 대안 경로 -->
+        <!-- STEP 3: COMPARISON -->
         <div class="card">
-            <div class="card-title">🚨 버스 놓침 대비 대안 수단</div>
-            <div class="route-grid" id="routeList"></div>
+            <h2 class="font-pop text-base text-[#3E2723] mb-2">📊 교통수단별 소요 시간 비교</h2>
+            <div class="space-y-2" id="routeList">
+                <div class="text-xs text-gray-400 text-center py-3">
+                    [계산하기] 버튼을 눌러 출발지-목적지 간 최적 수단을 비교해보세요.
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- RIGHT PANEL: LARGE MAP WITH ANIMATED BUS -->
-    <div class="map-container">
-        <div class="map-header">
-            <div class="map-title">🗺️ 대형 인터랙티브 라이브 지도</div>
-            <span style="font-size:0.85rem; color:#718096; font-weight:700;">💡 지도를 클릭하면 핀이 이동합니다</span>
-        </div>
-
-        <!-- Map Mode Selector -->
-        <div class="map-pin-selector">
-            <button class="pin-btn active" id="btnPinStart" onclick="setSelectMode('start')">📍 출발지 찍기</button>
-            <button class="pin-btn" id="btnPinStop" onclick="setSelectMode('stop')">🚏 정류장 찍기</button>
-            <button class="pin-btn" id="btnPinAcademy" onclick="setSelectMode('academy')">🏫 학원 찍기</button>
-        </div>
-
-        <!-- Map Window Canvas -->
-        <div class="map-window">
-            <div class="map-status-overlay">
-                <div>
-                    <div class="status-badge safe" id="mapStatusTitle">🟢 여유 있음</div>
-                    <div id="mapStatusDesc" style="font-size:0.88rem; color:#4A5568; margin-top:2px;">
-                        버스가 곧 도착합니다. 여유있게 이동하세요!
-                    </div>
+    <div class="lg:col-span-7">
+        <div class="card sticky top-4">
+            <div class="flex items-center justify-between mb-3">
+                <div class="font-pop text-xl text-[#3E2723] flex items-center gap-2">
+                    🗺️ 강남 · 언주중 · 삼성 · 대치 라이브 지도
                 </div>
-                <div id="mapStatusTime" style="font-size:1.5rem; font-family:var(--pop-font); color:#2D3748;">
-                    여유 +2분
-                </div>
+                <span class="text-xs text-gray-500 font-bold bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+                    💡 지도를 클릭하여 출발지/정류장/목적지 변경
+                </span>
             </div>
 
-            <canvas id="mapCanvas" width="850" height="540"></canvas>
-        </div>
+            <!-- Canvas Window -->
+            <div class="map-window">
+                <!-- Status Bar Overlay -->
+                <div class="map-status-overlay">
+                    <div>
+                        <div class="font-pop text-lg flex items-center gap-1.5 text-gray-700" id="mapStatusTitle">
+                            🔘 경로 연산 대기 중
+                        </div>
+                        <div id="mapStatusDesc" class="text-xs text-gray-600 mt-0.5">
+                            출발지(📍)를 원하는 곳에 클릭하고 [계산하기]를 누르세요.
+                        </div>
+                    </div>
+                    <div id="mapStatusTime" class="font-pop text-2xl text-gray-800">
+                        --분
+                    </div>
+                </div>
 
-        <div style="font-size:0.85rem; color:#718096; text-align:center; margin-top:10px; font-weight:600;">
-            🔵 파란 점선: 도보 경로(움직이는 아홉 점) | 🟡 노란 대로: 버스 주행 도로 | 💨 연기 뿜는 버스: 실시간 위치
+                <canvas id="mapCanvas" width="900" height="600"></canvas>
+            </div>
+
+            <div class="text-xs text-gray-500 text-center mt-3 font-semibold flex items-center justify-center gap-3 flex-wrap">
+                <span>🏫 <b>언주중학교</b>(북서 고정)</span>
+                <span>🏢 <b>강남역</b>(서)</span>
+                <span>🌳 <b>선정릉/선릉</b>(북)</span>
+                <span>🏢 <b>삼성동 COEX</b>(동)</span>
+                <span>📚 <b>대치동 학원가</b>(남동)</span>
+            </div>
         </div>
     </div>
 
@@ -418,19 +319,47 @@ const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
 
 let selectMode = 'start';
+let isCalculated = false;
 
-// Locations in Canvas Coordinates
-let pins = {
-    start: { x: 200, y: 380 },
-    stop: { x: 280, y: 220 },
-    academy: { x: 700, y: 220 }
+// 1. FIXED LANDMARK: Unju Middle School (Fixed on northwest of map)
+const UNJU_MIDDLE_SCHOOL = {
+    x: 240,
+    y: 100,
+    name: "언주중학교"
 };
 
-// Animated Bus & Line Variables
-let busX = 60;              // Current Bus position on screen
-let targetBusX = 60;        // Target position calculated by ETA
-let dashOffset = 0;         // Animated dashed walking line offset
-let smokeParticles = [];    // Cute exhaust smoke particles
+// 2. DYNAMIC PINS: Can be placed ANYWHERE independent of Unju Middle School!
+let pins = {
+    start: { x: 240, y: 190 },   // Default start
+    stop: { x: 440, y: 440 },    // Default bus stop: Hanti Station
+    academy: { x: 700, y: 440 }  // Default destination: Daechi-dong
+};
+
+// Animation Loop Variables
+let busX = 100;
+let targetBusX = 100;
+let dashOffset = 0;
+let smokeParticles = [];
+
+// Universal Cross-Browser Canvas Rounded Rectangle Helper
+function drawRoundRect(context, x, y, width, height, radius) {
+    if (typeof radius === 'number') {
+        radius = { tl: radius, tr: radius, br: radius, bl: radius };
+    } else {
+        radius = Object.assign({ tl: 0, tr: 0, br: 0, bl: 0 }, radius);
+    }
+    context.beginPath();
+    context.moveTo(x + radius.tl, y);
+    context.lineTo(x + width - radius.tr, y);
+    context.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+    context.lineTo(x + width, y + height - radius.br);
+    context.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+    context.lineTo(x + radius.bl, y + height);
+    context.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+    context.lineTo(x, y + radius.tl);
+    context.quadraticCurveTo(x, y, x + radius.tl, y);
+    context.closePath();
+}
 
 function setSelectMode(mode) {
     selectMode = mode;
@@ -439,43 +368,45 @@ function setSelectMode(mode) {
     document.getElementById('btnPinAcademy').classList.toggle('active', mode === 'academy');
 }
 
-// Map Click Listener
+// Map Click Handler
 canvas.addEventListener('click', function(evt) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
+    try {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
 
-    const mouseX = (evt.clientX - rect.left) * scaleX;
-    const mouseY = (evt.clientY - rect.top) * scaleY;
+        const mouseX = (evt.clientX - rect.left) * scaleX;
+        const mouseY = (evt.clientY - rect.top) * scaleY;
 
-    if (selectMode === 'start') {
-        pins.start.x = mouseX;
-        pins.start.y = mouseY;
-        document.getElementById('startLocName').value = `선택 지점 (${Math.round(mouseX)}, ${Math.round(mouseY)})`;
-    } else if (selectMode === 'stop') {
-        pins.stop.x = mouseX;
-        pins.stop.y = mouseY;
-        pins.academy.y = mouseY; // Align road line
-        document.getElementById('stopLocName').value = `선택 정류장 (${Math.round(mouseX)}, ${Math.round(mouseY)})`;
-    } else if (selectMode === 'academy') {
-        pins.academy.x = mouseX;
-        pins.academy.y = mouseY;
-        document.getElementById('academyName').value = `선택 학원 (${Math.round(mouseX)}, ${Math.round(mouseY)})`;
+        if (selectMode === 'start') {
+            pins.start.x = mouseX;
+            pins.start.y = mouseY;
+            document.getElementById('startLocName').value = "📍 지정 출발지 (" + Math.round(mouseX) + ", " + Math.round(mouseY) + ")";
+        } else if (selectMode === 'stop') {
+            pins.stop.x = mouseX;
+            pins.stop.y = mouseY;
+            pins.academy.y = mouseY;
+            document.getElementById('stopLocName').value = "🚏 지정 정류장 (" + Math.round(mouseX) + ", " + Math.round(mouseY) + ")";
+        } else if (selectMode === 'academy') {
+            pins.academy.x = mouseX;
+            pins.academy.y = mouseY;
+            document.getElementById('academyName').value = "🏫 지정 목적지 (" + Math.round(mouseX) + ", " + Math.round(mouseY) + ")";
+        }
+
+        if (isCalculated) {
+            calculateTransit();
+        }
+    } catch (e) {
+        console.error("Click handler error:", e);
     }
-
-    recalculate();
 });
 
-// MAIN ANIMATION LOOP (RequestAnimationFrame for super smooth motion)
 function renderLoop() {
-    // 1. Update Animations
-    dashOffset -= 0.6; // Walking path dash moving effect
-    
-    // Smooth Lerp movement for the bus towards target position
-    busX += (targetBusX - busX) * 0.04;
+    dashOffset -= 0.6;
+    busX += (targetBusX - busX) * 0.05;
 
-    // Generate cute exhaust smoke particle behind the bus
-    if (Math.random() < 0.3) {
+    // Bus Smoke particles
+    if (Math.random() < 0.25) {
         smokeParticles.push({
             x: busX - 22,
             y: pins.stop.y + (Math.random() * 6 - 3),
@@ -485,77 +416,63 @@ function renderLoop() {
         });
     }
 
-    // Update smoke particles
-    smokeParticles.forEach((p, idx) => {
+    for (let i = smokeParticles.length - 1; i >= 0; i--) {
+        let p = smokeParticles[i];
         p.y += p.dy;
-        p.x -= 0.5; // Drift backward slightly
+        p.x -= 0.4;
         p.alpha -= 0.015;
         p.radius += 0.15;
-        if (p.alpha <= 0) smokeParticles.splice(idx, 1);
-    });
+        if (p.alpha <= 0) smokeParticles.splice(i, 1);
+    }
 
-    // 2. Draw Everything
     drawMap();
-
     requestAnimationFrame(renderLoop);
 }
 
 function drawMap() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // --- Background Map Elements ---
-    ctx.fillStyle = "#F4F7F6";
+    // Background Fill
+    ctx.fillStyle = "#F1F5F9";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Green Park Area (Cute Decor)
-    ctx.fillStyle = "#E6F4EA";
-    ctx.beginPath();
-    ctx.roundRect(40, 40, 180, 120, 20);
-    ctx.roundRect(500, 320, 280, 160, 24);
+    // Grid Lines
+    ctx.strokeStyle = "#E2E8F0";
+    ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += 50) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += 50) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    }
+
+    // 1. GREEN PARKS
+    ctx.fillStyle = "#C8E6C9";
+    drawRoundRect(ctx, 430, 45, 170, 105, 20);
     ctx.fill();
+    ctx.strokeStyle = "#A5D6A7"; ctx.lineWidth = 3; ctx.stroke();
 
-    ctx.font = "20px Pretendard";
-    ctx.fillText("🌳", 80, 90);
-    ctx.fillText("🌲", 140, 110);
-    ctx.fillText("🌲", 550, 390);
-    ctx.fillText("🌸", 640, 420);
+    ctx.font = "bold 12px Pretendard"; ctx.fillStyle = "#2E7D32";
+    ctx.fillText("🌳 선정릉 (선릉/정릉 공원)", 445, 80);
+    ctx.font = "14px Pretendard"; ctx.fillText("🌲 🌲 🌲", 485, 115);
 
-    // River / Stream (Cute Blue Curved Ribbon)
-    ctx.strokeStyle = "#C3E8FF";
-    ctx.lineWidth = 28;
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    ctx.moveTo(0, 480);
-    ctx.bezierCurveTo(300, 500, 400, 380, 850, 460);
-    ctx.stroke();
+    ctx.fillStyle = "#DCEDC8";
+    drawRoundRect(ctx, 140, 490, 130, 85, 16);
+    ctx.fill();
+    ctx.font = "bold 11px Pretendard"; ctx.fillStyle = "#33691E";
+    ctx.fillText("🌲 도곡공원", 165, 535);
 
-    // Secondary Cross Roads
-    ctx.strokeStyle = "#FFFFFF";
-    ctx.lineWidth = 14;
-    ctx.beginPath();
-    ctx.moveTo(pins.start.x, 0);
-    ctx.lineTo(pins.start.x, canvas.height);
-    ctx.stroke();
+    // 2. MAIN ROAD NETWORK
+    drawRoad(0, 220, canvas.width, 220, 28, "#FFE082", "테헤란로 (Teheran-ro)");
+    drawRoad(240, 0, 240, canvas.height, 24, "#FFE082", "언주로 (Eonju-ro)");
+    drawRoad(780, 0, 780, canvas.height, 26, "#FFE082", "영동대로");
+    drawRoad(0, pins.stop.y, canvas.width, pins.stop.y, 30, "#FFD54F", "도곡로 (340번 버스 노선)");
 
-    // MAIN BUS HIGHWAY (Yellow Road)
-    ctx.strokeStyle = "#FFE082";
-    ctx.lineWidth = 24;
-    ctx.beginPath();
-    ctx.moveTo(20, pins.stop.y);
-    ctx.lineTo(830, pins.stop.y);
-    ctx.stroke();
+    // 3. SUBWAY LINES
+    drawSubwayLine(0, 220, canvas.width, 220, "#10B981");
+    drawSubwayLine(440, 0, 440, canvas.height, "#F59E0B");
 
-    // Road Center Dash Lines
-    ctx.strokeStyle = "#FFB800";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([14, 12]);
-    ctx.beginPath();
-    ctx.moveTo(20, pins.stop.y);
-    ctx.lineTo(830, pins.stop.y);
-    ctx.stroke();
-    ctx.setLineDash([]); // Reset line dash
-
-    // --- MOVING PEDESTRIAN PATH (Blue Animated Dashed Line) ---
+    // 4. WALKING PATH
     ctx.strokeStyle = "#3B82F6";
     ctx.lineWidth = 5;
     ctx.setLineDash([8, 8]);
@@ -564,34 +481,207 @@ function drawMap() {
     ctx.moveTo(pins.start.x, pins.start.y);
     ctx.lineTo(pins.stop.x, pins.stop.y);
     ctx.stroke();
-    ctx.setLineDash([]); // Reset dash
+    ctx.setLineDash([]);
 
-    // --- DRAW MAP PINS ---
-    // Start Pin (내 위치)
-    drawPinBadge(pins.start.x, pins.start.y, "#3B82F6", "🏃", "내 위치");
+    // 5. PERMANENT LANDMARK: 언주중학교
+    drawUnjuMiddleSchoolLandmark(UNJU_MIDDLE_SCHOOL.x, UNJU_MIDDLE_SCHOOL.y);
 
-    // Bus Stop Pin (정류장)
+    // 6. REGIONAL LANDMARKS
+    drawGangnamStation(90, 220);
+    drawAreaBadge(170, 280, "🏢 역삼동");
+    drawAreaBadge(440, 220, "🚇 선릉역");
+    drawSamseongCoex(780, 170);
+    drawAreaBadge(440, 440, "🚇 한티역");
+    drawAreaBadge(190, 460, "🏘️ 도곡동");
+    drawDaechiAcademyZone(pins.academy.x, pins.academy.y - 65);
+
+    // 7. PINS
+    drawPinBadge(pins.start.x, pins.start.y, "#3B82F6", "📍", "출발지");
     drawPinBadge(pins.stop.x, pins.stop.y, "#FF9800", "🚏", "정류장");
+    drawPinBadge(pins.academy.x, pins.academy.y, "#10B981", "🏫", "목적지");
 
-    // Academy Pin (목적지)
-    drawPinBadge(pins.academy.x, pins.academy.y, "#10B981", "🏫", document.getElementById('academyName').value);
+    // 8. BUS
+    for (let i = 0; i < smokeParticles.length; i++) {
+        let p = smokeParticles[i];
+        ctx.fillStyle = "rgba(200, 210, 220, " + p.alpha + ")";
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+    }
 
-    // --- EXHAUST SMOKE PARTICLES ---
-    smokeParticles.forEach(p => {
-        ctx.fillStyle = `rgba(200, 210, 220, ${p.alpha})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-    });
-
-    // --- SUPER CUTE MOVING BUS WITH ENGINE BOUNCE ---
-    const bounceY = Math.sin(Date.now() / 120) * 3; // Engine wobble vibration
-    const busY = pins.stop.y + bounceY;
-
-    drawCuteBus(busX, busY);
+    const bounceY = Math.sin(Date.now() / 120) * 3;
+    drawCuteBus(busX, pins.stop.y + bounceY);
 }
 
-// Draw Super Cute Vector Bus
+function drawRoad(x1, y1, x2, y2, width, color, label) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([12, 10]);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.font = "bold 11px Pretendard"; ctx.fillStyle = "#5D4037";
+    if (x1 === x2) {
+        ctx.fillText(label, x1 + 14, (y1 + y2) / 2 + 30);
+    } else {
+        ctx.fillText(label, (x1 + x2) / 2 - 40, y1 - width/2 - 4);
+    }
+}
+
+function drawSubwayLine(x1, y1, x2, y2, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+function drawUnjuMiddleSchoolLandmark(x, y) {
+    ctx.save();
+
+    // 학교 부지
+    ctx.fillStyle = "#FFF9C4";
+    ctx.strokeStyle = "#FBC02D";
+    ctx.lineWidth = 3;
+    drawRoundRect(ctx, x - 75, y - 75, 150, 110, 16);
+    ctx.fill();
+    ctx.stroke();
+
+    // 트랙 & 잔디
+    ctx.fillStyle = "#D84315";
+    ctx.beginPath(); ctx.ellipse(x + 22, y - 30, 38, 24, 0, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = "#4CAF50";
+    ctx.beginPath(); ctx.ellipse(x + 22, y - 30, 28, 15, 0, 0, Math.PI * 2); ctx.fill();
+
+    // 학교 건물
+    ctx.fillStyle = "#E65100";
+    drawRoundRect(ctx, x - 65, y - 68, 56, 40, 6);
+    ctx.fill();
+
+    // 창문
+    ctx.fillStyle = "#E0F7FA";
+    for(let r = 0; r < 2; r++) {
+        for(let c = 0; c < 3; c++) {
+            ctx.fillRect(x - 60 + (c * 16), y - 62 + (r * 15), 11, 9);
+        }
+    }
+
+    // 시계탑
+    ctx.fillStyle = "#F57C00";
+    ctx.fillRect(x - 42, y - 80, 14, 12);
+    ctx.fillStyle = "#FFF";
+    ctx.beginPath(); ctx.arc(x - 35, y - 74, 4.5, 0, Math.PI * 2); ctx.fill();
+
+    // 깃발
+    ctx.strokeStyle = "#374151";
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x - 65, y - 68); ctx.lineTo(x - 65, y - 88); ctx.stroke();
+
+    ctx.fillStyle = "#EF4444";
+    ctx.fillRect(x - 65, y - 88, 12, 8);
+
+    // 언주중학교 대형 명찰 표지판
+    ctx.font = "bold 14px ONE-Mobile-POP, Pretendard";
+    const labelText = "🏫 언주중학교";
+    const textWidth = ctx.measureText(labelText).width;
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#F59E0B";
+    ctx.lineWidth = 3.5;
+    drawRoundRect(ctx, x - (textWidth/2) - 12, y + 40, textWidth + 24, 28, 14);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = "#3E2723";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(labelText, x, y + 54);
+
+    ctx.restore();
+}
+
+function drawGangnamStation(x, y) {
+    ctx.save();
+    ctx.fillStyle = "#5C6BC0"; ctx.fillRect(x - 35, y - 60, 22, 50);
+    ctx.fillStyle = "#3F51B5"; ctx.fillRect(x - 10, y - 80, 26, 70);
+    ctx.fillStyle = "#303F9F"; ctx.fillRect(x + 18, y - 50, 18, 40);
+
+    ctx.fillStyle = "#10B981";
+    ctx.beginPath(); ctx.arc(x, y - 10, 12, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#FFF"; ctx.font = "bold 11px Pretendard"; ctx.textAlign = "center";
+    ctx.fillText("2", x, y - 6);
+
+    ctx.font = "bold 12px Pretendard"; ctx.fillStyle = "#1A237E";
+    ctx.fillText("🏢 강남역", x, y + 14);
+    ctx.restore();
+}
+
+function drawSamseongCoex(x, y) {
+    ctx.save();
+    ctx.fillStyle = "#0288D1";
+    ctx.beginPath();
+    ctx.moveTo(x - 25, y - 20); ctx.lineTo(x - 10, y - 85);
+    ctx.lineTo(x + 5, y - 85); ctx.lineTo(x + 10, y - 20);
+    ctx.closePath(); ctx.fill();
+
+    ctx.fillStyle = "#4FC3F7";
+    ctx.beginPath(); ctx.ellipse(x + 25, y - 30, 25, 15, 0, 0, Math.PI * 2); ctx.fill();
+
+    ctx.font = "bold 12px Pretendard"; ctx.fillStyle = "#01579B"; ctx.textAlign = "center";
+    ctx.fillText("🏢 삼성동 / COEX", x, y + 12);
+    ctx.restore();
+}
+
+function drawDaechiAcademyZone(x, y) {
+    ctx.save();
+    ctx.fillStyle = "#00897B"; ctx.fillRect(x - 28, y - 35, 24, 30);
+    ctx.fillStyle = "#00695C"; ctx.fillRect(x + 0, y - 50, 28, 45);
+
+    ctx.fillStyle = "#FFB300"; ctx.fillRect(x - 20, y - 25, 10, 14);
+    ctx.fillStyle = "#FF8F00"; ctx.fillRect(x + 8, y - 40, 12, 16);
+
+    ctx.font = "bold 12px Pretendard"; ctx.fillStyle = "#004D40"; ctx.textAlign = "center";
+    ctx.fillText("📚 대치동 학원가", x + 2, y + 12);
+    ctx.restore();
+}
+
+function drawAreaBadge(x, y, label) {
+    ctx.save();
+    ctx.font = "bold 11px Pretendard";
+    const w = ctx.measureText(label).width + 12;
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+    ctx.strokeStyle = "#CBD5E0"; ctx.lineWidth = 1.5;
+    drawRoundRect(ctx, x - w/2, y - 10, w, 20, 8);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = "#2D3748"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(label, x, y);
+    ctx.restore();
+}
+
+function drawPinBadge(x, y, color, emoji, label) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill();
+
+    ctx.font = "14px Pretendard"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(emoji, x, y);
+
+    ctx.font = "bold 11px Pretendard"; ctx.fillStyle = "#1E293B";
+    drawRoundRect(ctx, x - 30, y + 18, 60, 20, 6);
+    ctx.fill();
+
+    ctx.fillStyle = "#FFFFFF"; ctx.fillText(label, x, y + 28);
+    ctx.restore();
+}
+
 function drawCuteBus(x, y) {
     const busWidth = 52;
     const busHeight = 32;
@@ -599,175 +689,116 @@ function drawCuteBus(x, y) {
     ctx.save();
     ctx.translate(x, y);
 
-    // Bus Body (Cute Rounded Yellow Box)
     ctx.fillStyle = "#FFB800";
-    ctx.beginPath();
-    ctx.roundRect(-busWidth/2, -busHeight/2 - 6, busWidth, busHeight, 10);
+    drawRoundRect(ctx, -busWidth/2, -busHeight/2 - 6, busWidth, busHeight, 10);
     ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = "#E6A100";
-    ctx.stroke();
+    ctx.lineWidth = 3; ctx.strokeStyle = "#E6A100"; ctx.stroke();
 
-    // Bus Roof Cap Light
     ctx.fillStyle = "#EF4444";
-    ctx.beginPath();
-    ctx.arc(0, -busHeight/2 - 7, 4, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(0, -busHeight/2 - 7, 4, 0, Math.PI * 2); ctx.fill();
 
-    // Windows (Blue Tinted)
     ctx.fillStyle = "#E0F2FE";
-    ctx.beginPath();
-    ctx.roundRect(-busWidth/2 + 6, -busHeight/2 - 2, 12, 12, 3);
-    ctx.roundRect(-busWidth/2 + 22, -busHeight/2 - 2, 12, 12, 3);
-    ctx.roundRect(-busWidth/2 + 38, -busHeight/2 - 2, 8, 12, 3);
-    ctx.fill();
+    drawRoundRect(ctx, -busWidth/2 + 6, -busHeight/2 - 2, 12, 12, 3); ctx.fill();
+    drawRoundRect(ctx, -busWidth/2 + 22, -busHeight/2 - 2, 12, 12, 3); ctx.fill();
+    drawRoundRect(ctx, -busWidth/2 + 38, -busHeight/2 - 2, 8, 12, 3); ctx.fill();
 
-    // Cute Eyes / Headlight on Front Window
-    ctx.fillStyle = "#1E293B";
-    ctx.beginPath();
-    ctx.arc(-busWidth/2 + 10, -busHeight/2 + 4, 2, 0, Math.PI * 2);
-    ctx.arc(-busWidth/2 + 26, -busHeight/2 + 4, 2, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Wheels (Black Spinning circles)
-    const wheelAngle = (x / 10) % (Math.PI * 2);
     ctx.fillStyle = "#334155";
     ctx.beginPath();
     ctx.arc(-16, busHeight/2 - 4, 6, 0, Math.PI * 2);
     ctx.arc(16, busHeight/2 - 4, 6, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "#FFF";
-    ctx.beginPath();
-    ctx.arc(-16, busHeight/2 - 4, 2, 0, Math.PI * 2);
-    ctx.arc(16, busHeight/2 - 4, 2, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Bus Label Badge
-    ctx.font = "bold 11px Pretendard";
-    ctx.fillStyle = "#1E293B";
-    ctx.textAlign = "center";
+    ctx.font = "bold 11px Pretendard"; ctx.fillStyle = "#1E293B"; ctx.textAlign = "center";
     const busNumStr = document.getElementById('busNum').value;
-    ctx.fillText(`🚌 ${busNumStr}`, 0, -busHeight/2 - 14);
+    ctx.fillText("🚌 " + busNumStr, 0, -busHeight/2 - 14);
 
     ctx.restore();
 }
 
-// Draw Map Location Pin
-function drawPinBadge(x, y, color, emoji, label) {
-    ctx.save();
-    
-    // Outer Pin Glow
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(x, y, 18, 0, Math.PI * 2);
-    ctx.fill();
+function calculateTransit() {
+    isCalculated = true;
 
-    ctx.fillStyle = "#FFFFFF";
-    ctx.beginPath();
-    ctx.arc(x, y, 14, 0, Math.PI * 2);
-    ctx.fill();
+    const dxWalk = pins.stop.x - pins.start.x;
+    const dyWalk = pins.stop.y - pins.start.y;
+    const walkDistancePx = Math.sqrt(dxWalk*dxWalk + dyWalk*dyWalk);
 
-    // Emoji Icon
-    ctx.font = "16px Pretendard";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(emoji, x, y);
+    const dxBus = pins.academy.x - pins.stop.x;
+    const dyBus = pins.academy.y - pins.stop.y;
+    const busDistancePx = Math.sqrt(dxBus*dxBus + dyBus*dyBus);
 
-    // Label Pill
-    ctx.font = "bold 12px Pretendard";
-    ctx.fillStyle = "#1E293B";
-    ctx.beginPath();
-    ctx.roundRect(x - 45, y + 22, 90, 22, 8);
-    ctx.fill();
-
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(label.length > 7 ? label.substring(0,6)+'..' : label, x, y + 33);
-
-    ctx.restore();
-}
-
-// Recalculate ETA and Bus Position Target
-function recalculate() {
-    const dx = pins.stop.x - pins.start.x;
-    const dy = pins.stop.y - pins.start.y;
-    const distancePx = Math.sqrt(dx*dx + dy*dy);
-    
     const speedVal = document.getElementById('speedSelect').value;
-    let speedMult = 1.0;
-    if (speedVal === 'fast') speedMult = 0.8;
-    if (speedVal === 'slow') speedMult = 1.35;
+    let walkFactor = 1.0;
+    if (speedVal === 'fast') walkFactor = 0.75;
+    if (speedVal === 'slow') walkFactor = 1.35;
 
-    const walkMin = Math.max(Math.round((distancePx / 42) * speedMult), 1);
+    const walkMin = Math.max(Math.round((walkDistancePx / 28) * walkFactor), 2);
 
     const weather = document.getElementById('weatherSelect').value;
-    let trafficDelay = 2;
-    if (weather === 'rain') trafficDelay = 5;
-    if (weather === 'snow') trafficDelay = 8;
+    let weatherDelay = 0;
+    if (weather === 'rain') weatherDelay = 3;
+    if (weather === 'snow') weatherDelay = 6;
 
-    const busEta = Math.max(3 + Math.floor(trafficDelay * 0.5), 2);
-    const timeDiff = busEta - walkMin;
+    const busWaitMin = 3 + weatherDelay;
+    const busRideMin = Math.max(Math.round(busDistancePx / 52), 3);
+    const totalBusTransitMin = busWaitMin + busRideMin;
 
-    // Calculate dynamic bus target position on map (x axis)
-    targetBusX = pins.stop.x - (busEta * 45);
+    const totalTimeMin = walkMin + totalBusTransitMin;
+
+    targetBusX = pins.stop.x - (busWaitMin * 25);
     if (targetBusX < 50) targetBusX = 50;
 
-    // Update Overlay UI
+    const resultBox = document.getElementById('calcResultBox');
+    const resultTimeText = document.getElementById('resultTimeText');
+    const resultDetailText = document.getElementById('resultDetailText');
+    
+    resultBox.classList.remove('hidden');
+    resultTimeText.innerText = "⏱️ 총 소요 시간: 약 " + totalTimeMin + "분";
+    resultDetailText.innerHTML = "📍 <b>지정 출발지 ➔ 정류장 도보:</b> 약 " + walkMin + "분 소요<br>" +
+        "🚌 <b>버스 대기 및 탑승:</b> 약 " + totalBusTransitMin + "분 (" + busWaitMin + "분 대기 + " + busRideMin + "분 탑승)<br>" +
+        "🌦️ <b>날씨 정체 요인:</b> +" + weatherDelay + "분 가산";
+
     const statusTitle = document.getElementById('mapStatusTitle');
     const statusDesc = document.getElementById('mapStatusDesc');
     const statusTime = document.getElementById('mapStatusTime');
 
-    if (timeDiff >= 2) {
-        statusTitle.className = "status-badge safe";
-        statusTitle.innerHTML = "🟢 여유 있음 (안전 출발)";
-        statusDesc.innerText = `버스가 ${busEta}분 후 도착 예정입니다. 정류장까지 도보 약 ${walkMin}분 소요됩니다.`;
-        statusTime.innerText = `여유 +${timeDiff}분`;
-        statusTime.style.color = "#059669";
-    } else if (timeDiff >= -1) {
-        statusTitle.className = "status-badge warning";
-        statusTitle.innerHTML = "🏃‍♂️ 서두르세요! (지금 출발)";
-        statusDesc.innerText = `버스가 ${busEta}분 후도착합니다! 지금 즉시 빠르기로 걸어가세요.`;
-        statusTime.innerText = `서두르세요!`;
-        statusTime.style.color = "#D97706";
-    } else {
-        statusTitle.className = "status-badge danger";
-        statusTitle.innerHTML = "🚨 놓칠 위험! (대안 추천)";
-        statusDesc.innerText = `정류장 도보 소요시간(${walkMin}분)이 버스 도착시간(${busEta}분)보다 길어 놓칠 수 있습니다!`;
-        statusTime.innerText = `지각 위험`;
-        statusTime.style.color = "#DC2626";
-    }
+    statusTitle.className = "font-pop text-lg text-emerald-600 flex items-center gap-1.5";
+    statusTitle.innerHTML = "🟢 실시간 경로 연산 완료";
+    statusDesc.innerText = "선택하신 출발지에서 목적지까지 약 " + totalTimeMin + "분 걸립니다.";
+    statusTime.innerText = totalTimeMin + "분";
+    statusTime.className = "font-pop text-2xl text-emerald-600";
 
-    renderRoutes(trafficDelay);
+    renderRouteComparisons(totalTimeMin, walkMin, weatherDelay);
 }
 
-function renderRoutes(trafficFactor) {
+function renderRouteComparisons(busTotalMin, walkMin, weatherDelay) {
     const container = document.getElementById('routeList');
     container.innerHTML = '';
 
+    const scooterTime = Math.max(Math.round(walkMin * 0.4) + 3 + weatherDelay, 4);
+    const taxiTime = Math.max(Math.round(busTotalMin * 0.55) + weatherDelay, 5);
+    const sprintTime = Math.max(Math.round(walkMin * 0.55) + 4, 6);
+
     const routes = [
-        { name: "⚡ 따릉이/킥보드", time: 7 + trafficFactor, score: 96 },
-        { name: "🚇 지하철 이용", time: 11, score: 88 },
-        { name: "🏃‍♂️ 전력 질주", time: 13, score: 75 },
-        { name: "🚕 택시 호출", time: 6 + (trafficFactor * 2), score: 62 }
+        { name: "🚌 버스 (도보 + 버스)", time: busTotalMin, score: 98, tag: "추천 수단" },
+        { name: "⚡ 따릉이 / 킥보드", time: scooterTime, score: 92, tag: "빠르고 유연" },
+        { name: "🚕 택시 이용", time: taxiTime, score: 82, tag: "편안함" },
+        { name: "🏃‍♂️ 전력 질주", time: sprintTime + 4, score: 65, tag: "체력 소모" }
     ];
 
-    routes.forEach((r, i) => {
+    routes.forEach(function(r, i) {
         const div = document.createElement('div');
-        div.className = `route-card ${i===0?'top':''}`;
-        div.innerHTML = `
-            <div>
-                <strong style="font-size:0.95rem; color:#2D3748;">${i+1}. ${r.name}</strong>
-                <div style="font-size:0.8rem; color:#718096;">약 ${r.time}분 소요</div>
-            </div>
-            <span style="font-family:var(--pop-font); color:#D69E2E; font-size:1.1rem;">${r.score}점</span>
-        `;
+        div.className = "route-card " + (i === 0 ? "top" : "");
+        div.innerHTML = "<div>" +
+            "<strong style='font-size:0.92rem; color:#2D3748;'>" + r.name + "</strong>" +
+            "<div style='font-size:0.78rem; color:#718096; margin-top:2px;'>약 <b>" + r.time + "분</b> 소요 (" + r.tag + ")</div>" +
+            "</div>" +
+            "<span style='font-family:var(--pop-font); color:#D69E2E; font-size:1.1rem;'>" + r.score + "점</span>";
         container.appendChild(div);
     });
 }
 
-// Start Main Animation Engine
+// Initialize Engine
 window.onload = function() {
-    recalculate();
     renderLoop();
 };
 </script>
